@@ -30,15 +30,25 @@ class MainActivity : AppCompatActivity() {
 private class ImageUrl(internal val imageView: ImageView) : AsyncTask<String, Void, String>() {
     override fun doInBackground(vararg urls: String): String? {
         android.os.Debug.waitForDebugger()
-        val random_url = urls[0]
-        val doc = Jsoup.connect(random_url).get()
-        val link = doc.select("div.media-preview-content > a")
-        var url = link.attr("href")
-        return url
+        try {
+            while (true){
+                val random_url = urls[0]
+                val doc = Jsoup.connect(random_url).get()
+                val link = doc.select("div.media-preview-content > a")
+                var url = link.attr("href")
+
+                if (url != "" && url != null){
+                    return url
+                }
+            }
+        }
+        catch (e: Exception){
+            return null
+        }
     }
 
     override fun onPostExecute(result: String?) {
-        if (result!= null){
+        if (result != null){
             Picasso.get().load(result).into(imageView)
         }
         else{
