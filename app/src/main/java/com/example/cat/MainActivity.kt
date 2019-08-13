@@ -9,8 +9,7 @@ import android.widget.Toast
 import com.squareup.picasso.Picasso
 import org.jsoup.Jsoup
 import android.os.AsyncTask
-import android.widget.Button
-import android.widget.ProgressBar
+import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 
@@ -19,19 +18,28 @@ import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
 
+    internal  lateinit var viewPager: ViewPager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        viewPager = findViewById<ViewPager>(R.id.viewPager) as ViewPager
+        val adapter = ViewPageAdapter(this)
+        viewPager.adapter = adapter
+
+
+
         //fetch photo on start
-        val button = this.button
-        button.performClick()
+        //val button = this.button
+        //button.performClick()
         }
 
     //get a random photo cat standing up photo from reddit
     fun setCatPhoto(view: View){
-        val image = findViewById<ImageView>(R.id.imageUrl)
-        ImageUrl(image).execute("https://old.reddit.com/r/CatsStandingUp/random")
+        //val image = findViewById<ImageView>(R.id.imageUrl)
+        //ImageUrl(image).execute("https://old.reddit.com/r/CatsStandingUp/random")
     }
 
     //get the direct url of the reddit image and set the image
