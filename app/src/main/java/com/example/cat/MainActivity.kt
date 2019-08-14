@@ -16,8 +16,6 @@ import java.io.IOException
 import kotlin.text.Regex
 
 
-
-
 class MainActivity : AppCompatActivity() {
 
     internal lateinit var viewPager: ViewPager

@@ -35,7 +35,7 @@
             android:id="@+id/viewPager"
             app:layout_constraintTop_toBottomOf="@+id/textView2"
             android:layout_marginTop="10dp"
-            android:background="@android:drawable/dialog_holo_light_frame"
+            android:background="@android:drawable/dialog_holo_dark_frame"
             android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/textView"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
     <TextView
