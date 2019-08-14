@@ -8,11 +8,12 @@ import android.widget.ImageView
 import androidx.core.content.getSystemService
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.squareup.picasso.Picasso
 
 class ViewPageAdapter(private val context: Context) : PagerAdapter(){
 
     private var layoutInflater:LayoutInflater?= null
-    private var images = arrayOf(R.drawable.image1, R.drawable.image2)
+    var images = mutableListOf<String>()
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view === `object`
@@ -26,7 +27,9 @@ class ViewPageAdapter(private val context: Context) : PagerAdapter(){
         layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val v = layoutInflater!!.inflate(R.layout.custom_layout, null)
         val image = v.findViewById<View>(R.id.image_view) as ImageView
-        image.setImageResource(images[position])
+
+        //image.setImageResource(images[position])
+        Picasso.get().load(images[position]).into(image)
 
         val vp = container as ViewPager
         vp.addView(v, 0)
@@ -37,8 +40,6 @@ class ViewPageAdapter(private val context: Context) : PagerAdapter(){
         val vp = container as ViewPager
         val v = `object` as View
         vp.removeView(v)
-
     }
-
 
 }

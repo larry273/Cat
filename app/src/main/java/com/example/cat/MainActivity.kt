@@ -13,37 +13,52 @@ import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 
+import kotlin.text.Regex
+
 
 
 
 class MainActivity : AppCompatActivity() {
 
-    internal  lateinit var viewPager: ViewPager
+    internal lateinit var viewPager: ViewPager
+    val adapter = ViewPageAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
 
-        viewPager = findViewById<ViewPager>(R.id.viewPager) as ViewPager
-        val adapter = ViewPageAdapter(this)
+        viewPager = findViewById(R.id.viewPager)
         viewPager.adapter = adapter
 
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
 
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                addCatPhoto()
+            }
 
+            override fun onPageSelected(position: Int) {
+            }
+        })
+
+        //add cat photos
+        repeat(5){
+            addCatPhoto()
+        }
         //fetch photo on start
         //val button = this.button
         //button.performClick()
         }
 
     //get a random photo cat standing up photo from reddit
-    fun setCatPhoto(view: View){
-        //val image = findViewById<ImageView>(R.id.imageUrl)
-        //ImageUrl(image).execute("https://old.reddit.com/r/CatsStandingUp/random")
+    private fun addCatPhoto(){
+        ImageUrl(adapter).execute("https://old.reddit.com/r/CatsStandingUp/random")
     }
 
     //get the direct url of the reddit image and set the image
-    inner class ImageUrl(internal val imageView: ImageView) : AsyncTask<String, Void, String>() {
+    inner class ImageUrl(internal val adpater:ViewPageAdapter) : AsyncTask<String, Void, String>() {
         override fun onPreExecute() {
             super.onPreExecute()
             progressBar.visibility = View.VISIBLE
@@ -51,6 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         override fun doInBackground(vararg urls: String): String? {
             //android.os.Debug.waitForDebugger()
+            val reg = Regex("(http)?s?:?(\\/\\/[^\"']*\\.(?:png|jpg|jpeg|gif|png))")
 
             try {
                 val sourceUrl = urls[0]
@@ -60,7 +76,10 @@ class MainActivity : AppCompatActivity() {
                     var url = link.attr("href")
 
                     if (url != "" && url != null){
-                        return url
+                        if (reg.matches(url)){
+                            println("URL FOUND")
+                            return url
+                        }
                     }
                 }
             }
@@ -72,11 +91,15 @@ class MainActivity : AppCompatActivity() {
         override fun onPostExecute(result: String?) {
             progressBar.visibility = View.GONE
             if (result != null){
-                Picasso.get().load(result).into(imageView)
+                //Picasso.get().load(result).into(imageView)\
+                println("url added ")
+                Picasso.get().load(result).fetch()
+                adapter.images.add(result)
+                adpater.notifyDataSetChanged()
             }
-            else{
-                Toast.makeText(imageView.context, "Cat.", Toast.LENGTH_SHORT).show()
-            }
+            //else{
+                //Toast.makeText(imageView.context, "Cat.", Toast.LENGTH_SHORT).show()
+            //}
         }
     }
 }

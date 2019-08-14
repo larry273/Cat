@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cat</string>
+    <string name="app_name">Cat.</string>
     <string name="cat_text">Cat.</string>
-    <string name="more_text">Cat.</string>
+    <string name="more_text">Swipe for more Cat.</string>
 </resources>
