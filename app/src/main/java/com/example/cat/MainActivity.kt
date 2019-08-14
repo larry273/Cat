@@ -30,26 +30,25 @@ class MainActivity : AppCompatActivity() {
 
         viewPager = findViewById(R.id.viewPager)
         viewPager.adapter = adapter
-
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+
             override fun onPageScrollStateChanged(state: Int) {
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                addCatPhoto()
+                if (position > adapter.getCount() - 3){
+                    addCatPhoto()
+                }
             }
 
             override fun onPageSelected(position: Int) {
             }
         })
 
-        //add cat photos
+        //add cat 5 initial photos
         repeat(5){
             addCatPhoto()
-        }
-        //fetch photo on start
-        //val button = this.button
-        //button.performClick()
+            }
         }
 
     //get a random photo cat standing up photo from reddit
